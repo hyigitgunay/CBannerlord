@@ -21,6 +21,8 @@ typedef struct {
    int hijyen;
 } Ozan;
 
+
+
 // Menu Fonksiyonu
 void menu() {
     printf("1. Kamp alanina git\n");
@@ -49,7 +51,7 @@ void kamp(Ozan *ozan) {
         switch (secim) {
             case 1:
                 printf("Calgi caliyorsunuz. Moralin artiyor!\n");
-                ozan->moral += 5;
+                ozan->moral += 25;
                 break;
             case 2:
                 printf("Nehirde yikandiniz. Hijyen artiyor!\n");
@@ -205,6 +207,8 @@ int main() {
     printf("Calginin Adini Giriniz: ");
     fgets(ozan.calgiAdi, sizeof(ozan.calgiAdi), stdin);
     ozan.calgiAdi[strcspn(ozan.calgiAdi, "\n")] = '\0';
+
+
 
     while (1) {
         menu();
