@@ -1,1 +1,209 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+
+// Karakter özellikleri
+struct Karakter {
+    char isim[50];
+    char enstruman[50];
+    int saglik;
+    int aclik;
+    int uyku;
+    int hijyen;
+    int para;
+    int seviye;
+    int deneyim;
+    int guc;
+    int ceviklik;
+    int dayaniklik;
+    int karizma;
+    int toplama;
+    int karisim;
+};
+
+// Fonksiyonlar
+void menuGoster();
+void kampAlaninaGit(struct Karakter* bard);
+void iyilesmeKulubesineGit(struct Karakter* bard);
+void tavernayaGit(struct Karakter* bard);
+void macerayaCik(struct Karakter* bard);
+void seviyeYukselt(struct Karakter* bard);
+void durumuGoster(struct Karakter bard);
+int cikisOnayla();
+int rastgeleSayi(int min, int max);
+
+int main() {
+    struct Karakter bard;
+
+    // Başlangıç değerleri
+    bard.saglik = 100;
+    bard.aclik = 100;
+    bard.uyku = 100;
+    bard.hijyen = 100;
+    bard.para = 10;
+    bard.seviye = 1;
+    bard.deneyim = 0;
+    bard.guc = 3;
+    bard.ceviklik = 3;
+    bard.karisim = 3;
+    bard.dayaniklik = 3;
+    bard.toplama = 3;
+
+    printf("Bard'ın ismini girin: ");
+    scanf("%s", bard.isim);
+
+    printf("Bard'ın çalgısını girin: ");
+    scanf("%s", bard.enstruman);
+
+    int secim;
+    do {
+        menuGoster();
+        printf("Seçiminizi yapın: ");
+        scanf("%d", &secim);
+
+        switch (secim) {
+            case 1:
+                kampAlaninaGit(&bard);
+                break;
+            case 2:
+                iyilesmeKulubesineGit(&bard);
+                break;
+            case 3:
+                tavernayaGit(&bard);
+                break;
+            case 4:
+                macerayaCik(&bard);
+                break;
+            case 5:
+                seviyeYukselt(&bard);
+                break;
+            case 6:
+                durumuGoster(bard);
+                break;
+            case 7:
+                if (cikisOnayla()) {
+                    printf("Oyundan çıkılıyor...\n");
+                    return 0;
+                }
+                break;
+            default:
+                printf("Geçersiz seçim! Lütfen tekrar deneyin.\n");
+        }
+    } while (1);
+
+    return 0;
+}
+
+void menuGoster() {
+    printf("\n--- Menü ---\n");
+    printf("1. Kamp alanına git.\n");
+    printf("2. İyileşme kulübesine git.\n");
+    printf("3. Tavernaya git.\n");
+    printf("4. Maceraya çık.\n");
+    printf("5. Seviye yükselt.\n");
+    printf("6. Durumu göster.\n");
+    printf("7. Oyundan çık.\n");
+}
+
+void kampAlaninaGit(struct Karakter* bard) {
+    int secim;
+    printf("\n--- Kamp Alanı ---\n");
+    printf("1. Kamp ateşinde çalgını çal veya şarkı söyle.\n");
+    printf("2. Nehirde yıkan.\n");
+    printf("3. Çadırında uyu.\n");
+    printf("4. Köy meydanına dön.\n");
+    printf("Seçiminizi yapın: ");
+    scanf("%d", &secim);
+
+    switch (secim) {
+        case 1:
+            printf("%s çalgısını çaldı ve şarkı söyledi. Ruh hali iyileşti!\n", bard->isim);
+            break;
+        case 2:
+            printf("%s nehirde yıkandı. Hijyen arttı!\n", bard->isim);
+            bard->hijyen += 20;
+            if (bard->hijyen > 100) bard->hijyen = 100;
+            break;
+        case 3:
+            printf("%s çadırda uyudu. Uyku seviyesi arttı!\n", bard->isim);
+            bard->uyku += 30;
+            if (bard->uyku > 100) bard->uyku = 100;
+            break;
+        case 4:
+            printf("Köy meydanına dönülüyor.\n");
+            break;
+        default:
+            printf("Geçersiz seçim!\n");
+    }
+}
+
+void ŞifahaneyeGit(struct Karakter* bard) {
+    int secim;
+    printf("\n--- Şifahane ---\n");
+    printf("1. Şifacıdan yaralarını tedavi etmesini iste.\n");
+    printf("2. Şifacıdan merhem hazırlayıp sürmesini iste.\n");
+    printf("3. Köy meydanına dön.\n");
+    printf("Seçiminizi yapın: ");
+    scanf("%d", &secim);
+
+    switch (secim) {
+        case 1:
+            printf("Şifacı %s'nin yaralarını tedavi etti. Sağlık arttı!\n", bard->isim);
+            bard->saglik += 20;
+            if (bard->saglik > 100) bard->saglik = 100;
+            break;
+        case 2:
+            printf("Şifacı %s'ye merhem hazırlayıp sürdü. Sağlık büyük ölçüde arttı!\n", bard->isim);
+            bard->saglik += 40;
+            if (bard->saglik > 100) bard->saglik = 100;
+            break;
+        case 3:
+            printf("Köy meydanına dönülüyor.\n");
+            break;
+        default:
+            printf("Geçersiz seçim!\n");
+    }
+}
+
+void tavernayaGit(struct Karakter* bard) {
+    int secim;
+    printf("\n--- Taverna ---\n");
+    printf("1. Yemek al ve ye.\n");
+    printf("2. İçecek al, rahatla ve eğlen.\n");
+    printf("3. Çalgını çal ve şarkı söyle.\n");
+    printf("4. Köy meydanına dön.\n");
+    printf("Seçiminizi yapın: ");
+    scanf("%d", &secim);
+
+    switch (secim) {
+        case 1:
+            printf("%s yemek aldı ve yedi. Açlık azaldı!\n", bard->isim);
+            bard->aclik += 20;
+            if (bard->aclik > 100) bard->aclik = 100;
+            break;
+        case 2:
+            printf("%s içecek aldı, rahatladı ve eğlendi. Ruh hali iyileşti!\n", bard->isim);
+            break;
+        case 3:
+            if (bard->hijyen > 20) {
+                printf("%s taverna müşterileri için performans sergiledi. Para kazandı!\n", bard->isim);
+                bard->para += 10 + (bard->karisim* bard->hijyen) / 100;
+            } else {
+                printf("Hijyenin çok düşük. Müşteriler seni dinlemek istemiyor!\n");
+            }
+            break;
+        case 4:
+            printf("Köy meydanına dönülüyor.\n");
+            break;
+        default:
+            printf("Geçersiz seçim!\n");
+    }
+}
+
+void macerayaCik(struct Karakter* bard) {
+    printf("\n--- Macera ---\n");
+    printf("%s bir maceraya atılıyor ve karşısına zorluk cıkıyor");
+
+}
 
