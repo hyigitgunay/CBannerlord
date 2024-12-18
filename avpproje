@@ -24,12 +24,13 @@ typedef struct {
 // Menu Fonksiyonu
 void menu() {
     printf("1. Kamp alanina git\n");
-    printf("2. Sifahaneye git\n");
+    printf("2. Yildirim Darusifasina git\n");
     printf("3. Hana git\n");
     printf("4. Maceraya atil\n");
     printf("5. Seviye atla\n");
     printf("6. Durumu goster\n");
     printf("7. Oyundan cik\n");
+    printf("----------\n");
     printf("Seciminizi yapin: ");
 }
 
@@ -41,6 +42,7 @@ void kamp(Ozan *ozan) {
         printf("2. Nehirde Yikan\n");
         printf("3. Cadirina Girip Uyu\n");
         printf("4. Koy Meydanina Don\n");
+        printf("----------\n");
         printf("Seciminizi yapin: ");
         int secim;
         scanf("%d", &secim);
@@ -68,10 +70,11 @@ void kamp(Ozan *ozan) {
 // Sifahane Fonksiyonu
 void sifahane(Ozan *ozan) {
     while (1) {
-        printf("\n-------Sifahane-------\n");
-        printf("1. Sifacidan yaralarini sarmani iste\n");
-        printf("2. Sifacidan Merhem Sarmasini iste\n");
+        printf("\n-------Yildirim Darusifasi-------\n");//islemlerden kac altin alinacagini yaz
+        printf("1. Tabipden yaralarini sarmani iste(+25 can puani verir)\n");
+        printf("2. Tabipden seni ameliyata almasini iste(Canini fuller)\n");
         printf("3. Koy Meydanina Don\n");
+        printf("----------\n");
         printf("Seciminizi yapin: ");
         int secim;
         scanf("%d", &secim);
@@ -101,6 +104,7 @@ void han(Ozan *ozan) {
         printf("2. Icecek Satin Al ic ve Eglen\n");
         printf("3. Enstruman cal ve sarki Soyle\n");
         printf("4. Koy Meydanina Don\n");
+        printf("----------\n");
         printf("Seciminizi yapin: ");
         int secim;
         scanf("%d", &secim);
@@ -134,6 +138,7 @@ void macera(Ozan *ozan) {
         printf("3. Kayaliklari Kesfe Cik(orta)\n");
         printf("4. Vadiye Kesfe Cik(zor)\n");
         printf("5. Koy Meydanina Geri Don\n");
+        printf("----------\n");
         printf("Seciminizi yapin: ");
         int secim;
         scanf("%d", &secim);
@@ -166,14 +171,32 @@ void macera(Ozan *ozan) {
 void durumu_goster(Ozan ozan) {
     printf("\n--- Karakter Durumu ---\n");
     printf("Isim: %s\nCalgi: %s\n", ozan.ozanAdi, ozan.calgiAdi);
-    printf("Can: %d\nTokluk: %d\nUyku: %d\nHijyen: %d\n", ozan.canDegeri, ozan.tokluk, ozan.uykuSeviye, ozan.hijyen);
-    printf("Seviye: %d\nTecrübe Puani: %d\nAltin: %d\n", ozan.level, ozan.tecrube, ozan.para);
+    printf("Can: %d\nMoral: %d\nTokluk: %d\nUyku: %d\nHijyen: %d\n", ozan.canDegeri,ozan.moral, ozan.tokluk, ozan.uykuSeviye, ozan.hijyen);
+    printf("Seviye: %d\nTecrube Puani: %d\nAltin: %d\n", ozan.level, ozan.tecrube, ozan.para);
     printf("Guc: %d\nCeviklik: %d\nDayaniklilik: %d\nKarizma: %d\nToplayicilik: %d\n", ozan.guc, ozan.ceviklik, ozan.dayaniklilik, ozan.karizma, ozan.toplayicilikPuani);
+    printf("----------\n");
 }
 
 // Ana Program
 int main() {
-    Ozan ozan = {"", "", 18, 100, 1, 100, 0, 100, 100, 10, 3, 3, 3, 3, 100};
+    Ozan ozan = {
+    "",             // ozanAdi: Kullanıcıdan alınacak
+    "",             // calgiAdi: Kullanıcıdan alınacak
+    18,             // yas: Başlangıçta standart yaş
+    50,             // para: Başlangıçta 50 altın
+    1,              // level: Başlangıç seviyesi
+    100,            // canDegeri: Tam sağlık
+    0,              // tecrube: Yeni başlıyor, 0 deneyim
+    100,            // tokluk: Tok
+    100,            // uykuSeviye: Dinlenmiş durumda
+    10,             // guc: Başlangıç gücü
+    50,             // moral: Orta düzeyde moral
+    10,             // ceviklik: Başlangıç çevikliği
+    10,             // dayaniklilik: Başlangıç dayanıklılığı
+    5,              // karizma: Ortalama karizma
+    10,             // toplayicilikPuani: Toplayıcılık başlangıç seviyesi
+    80              // hijyen: Biraz yıpranmış hijyen
+};
 
     printf("Ozanin Adini Giriniz: ");
     fgets(ozan.ozanAdi, sizeof(ozan.ozanAdi), stdin);
