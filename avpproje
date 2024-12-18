@@ -20,7 +20,7 @@ typedef struct {
    int hijyen;
 } Ozan;
 
-// Menü Fonksiyonu
+// Menu Fonksiyonu
 void menu() {
     printf("1. Kamp alanina git\n");
     printf("2. Sifahaneye git\n");
@@ -44,10 +44,10 @@ void kamp(Ozan *Ozan){
 }
 
 
-// Şifahane Fonksiyonu
+// Sifahane Fonksiyonu
 void sifahane(Ozan *Ozan){
     printf("\n-------Sifahane-------\n");
-    printf("1. Sifacýdan yaralarini sarmani iste\n");
+    printf("1. Sifacidan yaralarini sarmani iste\n");
     printf("2. Sifacidan Merhem Sarmasini iste\n");
     printf("3. Koy Meydanina Don\n");
     printf("5. Oyundan cik\n");
@@ -71,13 +71,13 @@ void Macera(Ozan *Ozan){
     printf("1. Yakin cevreden sifali bitki topla ve avlan\n");
     printf("2. Ormana Kesfe Cik(Kolay)\n");
     printf("3. Kayaliklari Kesfe Cik(orta)\n");
-    printf("4. Vadiye Keþfe Cik(zor)\n");
-    printf("5. Koy Meydaina Geri Don\n");
+    printf("4. Vadiye Kesfe Cik(zor)\n");
+    printf("5. Koy Meydanina Geri Don\n");
     printf("6. Oyundan cik\n");
     printf("Seciminizi yapin: ");
 }
 
-// Durumu Göster Fonksiyonu
+// Durumu Goster Fonksiyonu
 void durumu_goster(Ozan ozan) {
     printf("\n--- Karakter Durumu ---\n");
     printf("Isim: %s\nCalgi: %s\n", ozan.ozanAdi, ozan.calgiAdi);
@@ -117,7 +117,7 @@ int main() {
                 Macera(&ozan);
                 break;
             case 5:
-                printf("\nSeviye atlama işlemi gerçekleştirildi.\n");
+                printf("\nSeviye atlama islemi gerceklestirildi.\n");
                 ozan.level++;
                 ozan.tecrube = 0;
                 break;
@@ -125,7 +125,7 @@ int main() {
                 durumu_goster(ozan);
                 break;
             case 7:
-                printf("Oyundan çikmak istediginize emin misiniz? (E/H): ");
+                printf("Oyundan cikmak istediginize emin misiniz? (E/H): ");
                 char cikis_onayi;
                 scanf(" %c", &cikis_onayi);
                 if (cikis_onayi == 'E' || cikis_onayi == 'e') {
@@ -139,8 +139,4 @@ int main() {
     }
 
     return 0;
-}
-
-
-
 }
