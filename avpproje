@@ -1,142 +1,209 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <string.h>
 
-typedef struct {
-   char ozanAdi[50];
-   char calgiAdi[50];
-   int yas;
-   int para;
-   int level;
-   int canDegeri;
-   int tecrube;
-   int tokluk;
-   int uykuSeviye;
-   int guc;
-   int ceviklik;
-   int dayaniklilik;
-   int karizma;
-   int toplayicilikPuani;
-   int hijyen;
-} Ozan;
+// Karakter özellikleri
+struct Karakter {
+    char isim[50];
+    char enstruman[50];
+    int saglik;
+    int aclik;
+    int uyku;
+    int hijyen;
+    int para;
+    int seviye;
+    int deneyim;
+    int guc;
+    int ceviklik;
+    int dayaniklik;
+    int karizma;
+    int toplama;
+    int karisim;
+};
 
-// Menu Fonksiyonu
-void menu() {
-    printf("1. Kamp alanina git\n");
-    printf("2. Sifahaneye git\n");
-    printf("3. Hana git\n");
-    printf("4. Maceraya atil\n");
-    printf("5. Seviye atla\n");
-    printf("6. Durumu goster\n");
-    printf("7. Oyundan cik\n");
-    printf("Seciminizi yapin: ");
-}
+// Fonksiyonlar
+void menuGoster();
+void kampAlaninaGit(struct Karakter* bard);
+void iyilesmeKulubesineGit(struct Karakter* bard);
+void tavernayaGit(struct Karakter* bard);
+void macerayaCik(struct Karakter* bard);
+void seviyeYukselt(struct Karakter* bard);
+void durumuGoster(struct Karakter bard);
+int cikisOnayla();
+int rastgeleSayi(int min, int max);
 
-// Kamp Fonksiyonu
-void kamp(Ozan *Ozan){
-    printf("\n-------Kamp Alani-------\n");
-    printf("1. Kamp Atesinin Basinda Calgi Cal\n");
-    printf("2. Nehirde Yikan\n");
-    printf("3. Cadirina Girip Uyu\n");
-    printf("4. Koy Meydanina Don\n");
-    printf("5. Oyundan cik\n");
-    printf("Seciminizi yapin: ");
-}
-
-
-// Sifahane Fonksiyonu
-void sifahane(Ozan *Ozan){
-    printf("\n-------Sifahane-------\n");
-    printf("1. Sifacidan yaralarini sarmani iste\n");
-    printf("2. Sifacidan Merhem Sarmasini iste\n");
-    printf("3. Koy Meydanina Don\n");
-    printf("5. Oyundan cik\n");
-    printf("Seciminizi yapin: ");
-}
-
-// Han Fonksiyonu
-void Han(Ozan *Ozan){
-    printf("\n-------Han-------\n");
-    printf("1. Yiyecek Satin Al ve Ye\n");
-    printf("2. Icecek Satin Al ic ve Eglen\n");
-    printf("3. Enstruman cal ve sarki Soyle\n");
-    printf("4. Koy Meydanina Don\n");
-    printf("5. Oyundan cik\n");
-    printf("Seciminizi yapin: ");
-}
-
-// Macera Fonksiyonu
-void Macera(Ozan *Ozan){
-    printf("\n-------Macera-------\n");
-    printf("1. Yakin cevreden sifali bitki topla ve avlan\n");
-    printf("2. Ormana Kesfe Cik(Kolay)\n");
-    printf("3. Kayaliklari Kesfe Cik(orta)\n");
-    printf("4. Vadiye Kesfe Cik(zor)\n");
-    printf("5. Koy Meydanina Geri Don\n");
-    printf("6. Oyundan cik\n");
-    printf("Seciminizi yapin: ");
-}
-
-// Durumu Goster Fonksiyonu
-void durumu_goster(Ozan ozan) {
-    printf("\n--- Karakter Durumu ---\n");
-    printf("Isim: %s\nCalgi: %s\n", ozan.ozanAdi, ozan.calgiAdi);
-    printf("Can: %d\nTokluk: %d\nUyku: %d\nHijyen: %d\n", ozan.canDegeri, ozan.tokluk, ozan.uykuSeviye, ozan.hijyen);
-    printf("Seviye: %d\nTecrübe Puani: %d\nAltin: %d\n", ozan.level, ozan.tecrube, ozan.para);
-    printf("Guc: %d\nCeviklik: %d\nDayaniklilik: %d\nKarizma: %d\nToplayicilik: %d\n", ozan.guc, ozan.ceviklik, ozan.dayaniklilik, ozan.karizma, ozan.toplayicilikPuani);
-}
-
-// Ana Program
 int main() {
-    Ozan ozan = {"", "", 18, 100, 1, 100, 0, 100, 100, 10, 3, 3, 3, 3, 100};
+    struct Karakter bard;
 
-    printf("Ozanin Adini Giriniz: ");
-    fgets(ozan.ozanAdi, sizeof(ozan.ozanAdi), stdin);
-    ozan.ozanAdi[strcspn(ozan.ozanAdi, "\n")] = '\0';
+    // Başlangıç değerleri
+    bard.saglik = 100;
+    bard.aclik = 100;
+    bard.uyku = 100;
+    bard.hijyen = 100;
+    bard.para = 10;
+    bard.seviye = 1;
+    bard.deneyim = 0;
+    bard.guc = 3;
+    bard.ceviklik = 3;
+    bard.karisim = 3;
+    bard.dayaniklik = 3;
+    bard.toplama = 3;
 
-    printf("Calginin Adini Giriniz: ");
-    fgets(ozan.calgiAdi, sizeof(ozan.calgiAdi), stdin);
-    ozan.calgiAdi[strcspn(ozan.calgiAdi, "\n")] = '\0';
+    printf("Bard'ın ismini girin: ");
+    scanf("%s", bard.isim);
 
-    while (1) {
-        menu();
-        int secim;
+    printf("Bard'ın çalgısını girin: ");
+    scanf("%s", bard.enstruman);
+
+    int secim;
+    do {
+        menuGoster();
+        printf("Seçiminizi yapın: ");
         scanf("%d", &secim);
 
         switch (secim) {
             case 1:
-                kamp(&ozan);
+                kampAlaninaGit(&bard);
                 break;
             case 2:
-                sifahane(&ozan);
+                iyilesmeKulubesineGit(&bard);
                 break;
             case 3:
-                Han(&ozan);
+                tavernayaGit(&bard);
                 break;
             case 4:
-                Macera(&ozan);
+                macerayaCik(&bard);
                 break;
             case 5:
-                printf("\nSeviye atlama islemi gerceklestirildi.\n");
-                ozan.level++;
-                ozan.tecrube = 0;
+                seviyeYukselt(&bard);
                 break;
             case 6:
-                durumu_goster(ozan);
+                durumuGoster(bard);
                 break;
             case 7:
-                printf("Oyundan cikmak istediginize emin misiniz? (E/H): ");
-                char cikis_onayi;
-                scanf(" %c", &cikis_onayi);
-                if (cikis_onayi == 'E' || cikis_onayi == 'e') {
-                    printf("Oyun sonlandiriliyor...\n");
-                    exit(0);
+                if (cikisOnayla()) {
+                    printf("Oyundan çıkılıyor...\n");
+                    return 0;
                 }
                 break;
             default:
-                printf("Gecersiz giris! Lutfen tekrar deneyin.\n");
+                printf("Geçersiz seçim! Lütfen tekrar deneyin.\n");
         }
-    }
+    } while (1);
 
     return 0;
 }
+
+void menuGoster() {
+    printf("\n--- Menü ---\n");
+    printf("1. Kamp alanına git.\n");
+    printf("2. İyileşme kulübesine git.\n");
+    printf("3. Tavernaya git.\n");
+    printf("4. Maceraya çık.\n");
+    printf("5. Seviye yükselt.\n");
+    printf("6. Durumu göster.\n");
+    printf("7. Oyundan çık.\n");
+}
+
+void kampAlaninaGit(struct Karakter* bard) {
+    int secim;
+    printf("\n--- Kamp Alanı ---\n");
+    printf("1. Kamp ateşinde çalgını çal veya şarkı söyle.\n");
+    printf("2. Nehirde yıkan.\n");
+    printf("3. Çadırında uyu.\n");
+    printf("4. Köy meydanına dön.\n");
+    printf("Seçiminizi yapın: ");
+    scanf("%d", &secim);
+
+    switch (secim) {
+        case 1:
+            printf("%s çalgısını çaldı ve şarkı söyledi. Ruh hali iyileşti!\n", bard->isim);
+            break;
+        case 2:
+            printf("%s nehirde yıkandı. Hijyen arttı!\n", bard->isim);
+            bard->hijyen += 20;
+            if (bard->hijyen > 100) bard->hijyen = 100;
+            break;
+        case 3:
+            printf("%s çadırda uyudu. Uyku seviyesi arttı!\n", bard->isim);
+            bard->uyku += 30;
+            if (bard->uyku > 100) bard->uyku = 100;
+            break;
+        case 4:
+            printf("Köy meydanına dönülüyor.\n");
+            break;
+        default:
+            printf("Geçersiz seçim!\n");
+    }
+}
+
+void ŞifahaneyeGit(struct Karakter* bard) {
+    int secim;
+    printf("\n--- Şifahane ---\n");
+    printf("1. Şifacıdan yaralarını tedavi etmesini iste.\n");
+    printf("2. Şifacıdan merhem hazırlayıp sürmesini iste.\n");
+    printf("3. Köy meydanına dön.\n");
+    printf("Seçiminizi yapın: ");
+    scanf("%d", &secim);
+
+    switch (secim) {
+        case 1:
+            printf("Şifacı %s'nin yaralarını tedavi etti. Sağlık arttı!\n", bard->isim);
+            bard->saglik += 20;
+            if (bard->saglik > 100) bard->saglik = 100;
+            break;
+        case 2:
+            printf("Şifacı %s'ye merhem hazırlayıp sürdü. Sağlık büyük ölçüde arttı!\n", bard->isim);
+            bard->saglik += 40;
+            if (bard->saglik > 100) bard->saglik = 100;
+            break;
+        case 3:
+            printf("Köy meydanına dönülüyor.\n");
+            break;
+        default:
+            printf("Geçersiz seçim!\n");
+    }
+}
+
+void tavernayaGit(struct Karakter* bard) {
+    int secim;
+    printf("\n--- Taverna ---\n");
+    printf("1. Yemek al ve ye.\n");
+    printf("2. İçecek al, rahatla ve eğlen.\n");
+    printf("3. Çalgını çal ve şarkı söyle.\n");
+    printf("4. Köy meydanına dön.\n");
+    printf("Seçiminizi yapın: ");
+    scanf("%d", &secim);
+
+    switch (secim) {
+        case 1:
+            printf("%s yemek aldı ve yedi. Açlık azaldı!\n", bard->isim);
+            bard->aclik += 20;
+            if (bard->aclik > 100) bard->aclik = 100;
+            break;
+        case 2:
+            printf("%s içecek aldı, rahatladı ve eğlendi. Ruh hali iyileşti!\n", bard->isim);
+            break;
+        case 3:
+            if (bard->hijyen > 20) {
+                printf("%s taverna müşterileri için performans sergiledi. Para kazandı!\n", bard->isim);
+                bard->para += 10 + (bard->karisim* bard->hijyen) / 100;
+            } else {
+                printf("Hijyenin çok düşük. Müşteriler seni dinlemek istemiyor!\n");
+            }
+            break;
+        case 4:
+            printf("Köy meydanına dönülüyor.\n");
+            break;
+        default:
+            printf("Geçersiz seçim!\n");
+    }
+}
+
+void macerayaCik(struct Karakter* bard) {
+    printf("\n--- Macera ---\n");
+    printf("%s bir maceraya atılıyor ve karşısına zorluk cıkıyor");
+
+}
+
