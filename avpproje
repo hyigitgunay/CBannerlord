@@ -163,7 +163,8 @@ void han(Ozan *ozan) {
                 break;
             case 3:
                 printf("Sarki soylediniz. Para kazandiniz!\n");
-                ozan->altin += 20;
+                ozan->altin += 10 + (ozan->karizma * ozan->hijyen / 100);
+                ozan->hijyen -= 10;
                 break;
             case 4:
                 return;
