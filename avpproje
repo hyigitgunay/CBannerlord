@@ -103,8 +103,8 @@ void kamp(Ozan *ozan, int *uykuSayisi) {
 void sifahane(Ozan *ozan) {
     while (1) {
         printf("\n-------Yildirim Darussifasi-------\n");
-        printf("1. Tabipden yaralarini sarmani iste(+25 can puani verir)\n");
-        printf("2. Tabipden seni ameliyata almasini iste(Canini fuller)\n");
+        printf("1. Tabipden yaralarini sarmani iste(+25 can puani verir)==-25 altin\n");
+        printf("2. Tabipden seni ameliyata almasini iste(Canini fuller)==-50 altin\n");
         printf("3. Koy Meydanina Don\n");
         printf("----------\n");
         printf("Seciminizi yapin: ");
@@ -112,13 +112,25 @@ void sifahane(Ozan *ozan) {
         scanf("%d", &secim);
         switch (secim) {
             case 1:
-                printf("Yaralariniz sarildi. Caniniz yenilendi!\n");
-                ozan->can = 100;
+            if (ozan->altin >= 25) {
+                printf("Yaralariniz sarildi. Hijyen ve can artiyor!\n");
+                ozan->hijyen += 10;
+                ozan->can += 25;
+                ozan->altin -= 25;
+                }
+            else {
+                printf("Yeterli altin yok!\n");
+                }
                 break;
             case 2:
-                printf("Merhem alindi. Hijyen ve can artiyor!\n");
-                ozan->hijyen += 10;
-                ozan->can += 10;
+            if (ozan->altin >= 50) {
+                printf("Tabip ameliyata aldı. Caniniz yenilendi!\n");
+                ozan->can = 100;
+                ozan->altin -= 50;
+                }
+            else {
+                printf("Yeterli altin yok!\n");
+                }
                 break;
             case 3:
                 return;
@@ -392,4 +404,3 @@ int main() {
     }
     return 0;
 }
-
