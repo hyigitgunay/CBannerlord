@@ -64,8 +64,9 @@ void kamp(Ozan *ozan, int *uykuSayisi) {
         printf("\n-------Kamp Alani-------\n");
         printf("1. Kamp Atesinin Basinda Calgi Cal\n");
         printf("2. Nehirde Yikan\n");
-        printf("3. Cadirina Girip Uyu\n");
-        printf("4. Koy Meydanina Don\n");
+        printf("3. Hamama git==10 altin\n");
+        printf("4. Cadirina Girip Uyu\n");
+        printf("5. Koy Meydanina Don\n");
         printf("----------\n");
         printf("Seciminizi yapin: ");
         int secim;
@@ -79,9 +80,13 @@ void kamp(Ozan *ozan, int *uykuSayisi) {
                 break;
             case 2:
                 printf("Nehirde yikandiniz. Hijyen artiyor!\n");
-                ozan->hijyen = 100;
+                ozan->hijyen += 20;
                 break;
             case 3:
+                printf("Hamamda Tellaklar seni yikadi. Hijyenin fullendi!\n");
+                ozan->hijyen = 100;
+                ozan->altin -= 10;
+            case 4:
                 printf("Uyudunuz. Enerjiniz yenilendi!\n");
                 ozan->uyku = 100;
                 (*uykuSayisi)++; // Uyku sayısını artır
@@ -90,7 +95,7 @@ void kamp(Ozan *ozan, int *uykuSayisi) {
                     ozan->yas++;  // Her 5 uyku sonrası yaş artışı
                 }
                 break;
-            case 4:
+            case 5:
                 return;
             default:
                 printf("Gecersiz secim!\n");
