@@ -147,20 +147,51 @@ void sifahane(Ozan *ozan) {
 
 // Han Fonksiyonu
 void han(Ozan *ozan) {
+
     while (1) {
         printf("\n-------Han-------\n");
-        printf("1. Yiyecek Satin Al ve Ye\n");
+        printf("1. As Ocagina Git.\n");
         printf("2. Icecek Satin Al ic ve Eglen\n");
         printf("3. Enstruman cal ve sarki Soyle\n");
         printf("4. Koy Meydanina Don\n");
         printf("----------\n");
         printf("Seciminizi yapin: ");
         int secim;
+        int secim2;
         scanf("%d", &secim);
         switch (secim) {
             case 1:
-                printf("Yemek yediniz. Tokluk artiyor!\n");
-                ozan->tokluk = 100;
+                printf("-------As Ocagi-------\n");
+                printf("1. Elma Satin Al ve Ye==5 Altin\n");
+                printf("2. Ekmek Satin Al ve Ye==10 Altin\n");
+                printf("3. Kebap Satin Al ve Ye==25 Altin\n");
+                printf("Seciminizi yapin: ");
+                scanf("%d",&secim2);
+                if(secim2==1){
+                    ozan->tokluk += 5;
+                    ozan->altin -= 5;
+                    ozan->hijyen -= 5;
+                    printf("Elma Yediniz Tokluk Artiyor .Afiyet Olsun!\n");
+                    printf("----------\n");
+                }
+                else if(secim2==2){
+                    ozan->tokluk += 10;
+                    ozan->altin -= 10;
+                    ozan->hijyen -= 10;
+                    printf("Ekmek Yediniz Tokluk Artiyor .Afiyet Olsun!\n");
+                    printf("----------\n");
+                }
+                else if(secim2==3){
+                    ozan->tokluk += 50;
+                    ozan->altin -= 25;
+                    ozan->hijyen -= 15;
+                    printf("Kebap Yediniz Tokluk Artiyor .Afiyet Olsun!\n");
+                    printf("----------\n");
+                }
+                else{
+                    printf("Gecersiz secim!\n");
+                }
+
                 break;
             case 2:
                 printf("Icecek ictiniz. Moraliniz duzeliyor!\n");
@@ -245,7 +276,7 @@ void ozan_baslangic(Ozan *ozan) {
     ozan->tokluk = 100;
     ozan->uyku = 100;
     ozan->hijyen = 100;
-    ozan->altin = 10;
+    ozan->altin = 100;
     ozan->tecrube = 0;
     ozan->seviye = 1;
     ozan->guc = 3;
