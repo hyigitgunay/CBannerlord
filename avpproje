@@ -151,7 +151,7 @@ void han(Ozan *ozan) {
     while (1) {
         printf("\n-------Han-------\n");
         printf("1. As Ocagina Git.\n");
-        printf("2. Icecek Satin Al ic ve Eglen\n");
+        printf("2. Kimiz Satin Al ic ve Eglen==5 Altin\n");
         printf("3. Enstruman cal ve sarki Soyle\n");
         printf("4. Koy Meydanina Don\n");
         printf("----------\n");
@@ -194,8 +194,9 @@ void han(Ozan *ozan) {
 
                 break;
             case 2:
-                printf("Icecek ictiniz. Moraliniz duzeliyor!\n");
+                printf("Kimiz ictiniz. Moraliniz duzeliyor ve Karizmaniz Artiyor!\n");
                 ozan->karizma += 5;
+                ozan->moral += 5;
                 break;
             case 3:
                 printf("Sarki soylediniz. Para kazandiniz!\n");
