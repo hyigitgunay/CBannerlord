@@ -1,0 +1,579 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_BECERILER 5  // Maksimum beceri sayısı
+
+typedef struct {
+    char ozanAdi[50];
+    char calgiAdi[50];
+    int yas;
+    int altin;
+    int seviye;
+    int can;
+    int tecrube;
+    int tokluk;
+    int uyku;
+    int guc;
+    int moral;
+    int ceviklik;
+    int dayaniklilik;
+    int karizma;
+    int toplayicilik;
+    int hijyen;
+    int beceri_puani;
+    int beceriler[MAX_BECERILER];
+} Ozan;
+
+// Can kontrolü
+void can_kontrol(Ozan *ozan) {
+    if (ozan->tokluk == 0) ozan->can -= 20;
+    if (ozan->uyku == 0) ozan->can -= 10;
+    if (ozan->hijyen == 0) ozan->can -= 5;
+    if (ozan->moral > 100) ozan->moral = 100;
+
+    if (ozan->can > 100) ozan->can = 100;
+    if (ozan->can <= 0) {
+        ozan->can = 0;
+        printf("Ozan öldü! Oyun sona erdi.\n");
+        exit(0);
+    }
+}
+
+// Hijyen azalma fonksiyonu
+void hijyen_azalt(Ozan *ozan, int azalma_miktari) {
+    ozan->hijyen -= azalma_miktari;  // Hijyen miktarını azalt
+    if (ozan->hijyen < 0) ozan->hijyen = 0;  // Hijyen 0'dan düşük olmasın
+    printf("Hijyen azaldi. Mevcut hijyen: %d\n", ozan->hijyen);
+}
+
+// Menu Fonksiyonu
+void menu() {
+    printf("\n1. Kamp alanina git\n");
+    printf("2. Yildirim Darussifasina git\n");
+    printf("3. Hana git\n");
+    printf("4. Maceraya atil\n");
+    printf("5. Seviye atla\n");
+    printf("6. Durumu goster\n");
+    printf("7. Oyundan cik\n");
+    printf("----------\n");
+    printf("Seciminizi yapin: ");
+}
+
+// Kamp Fonksiyonu
+void kamp(Ozan *ozan, int *uykuSayisi) {
+    while (1) {
+        printf("\n-------Kamp Alani-------\n");
+        printf("1. Kamp Atesinin Basinda Calgi Cal\n");
+        printf("2. Nehirde Yikan\n");
+        printf("3. Hamama git(10 altin)\n");
+        printf("4. Cadirina Girip Uyu\n");
+        printf("5. Koy Meydanina Don\n");
+        printf("----------\n");
+        printf("Seciminizi yapin: ");
+        int secim;
+        scanf("%d", &secim);
+        can_kontrol(ozan);
+
+        switch (secim) {
+            case 1:
+                printf("Calgi caliyorsunuz. Moralin artiyor!\n");
+                ozan->moral += 25;
+                break;
+            case 2:
+                printf("Nehirde yikandiniz. Hijyen artiyor!\n");
+                ozan->hijyen += 20;
+                break;
+            case 3:
+                printf("Hamamda Tellaklar seni yikadi. Hijyenin fullendi!\n");
+                ozan->hijyen = 100;
+                ozan->altin -= 10;
+                break; // 'break' ekledim, aksi halde bir sonraki 'case' çalışabilirdi.
+            case 4:
+                printf("Uyudunuz. Enerjiniz yenilendi!\n");
+                ozan->uyku = 100;
+                (*uykuSayisi)++; // Uyku sayısını artır
+                hijyen_azalt(ozan, 10);  // Her uyuma işleminde hijyen 10 azalacak
+                if (*uykuSayisi % 5 == 0) {
+                    ozan->yas++;  // Her 5 uyku sonrası yaş artışı
+                }
+                break;
+            case 5:
+                return;
+            default:
+                printf("Gecersiz secim!\n");
+        }
+    }
+}
+
+// Sifahane Fonksiyonu
+void sifahane(Ozan *ozan) {
+    while (1) {
+        printf("\n-------Yildirim Darussifasi-------\n");
+        printf("1. Tabipden yaralarini sarmani iste(+25 can puani verir/-25 altin)\n");
+        printf("2. Tabipden seni ameliyata almasini iste(Canini fuller/-50 altin)\n");
+        printf("3. Koy Meydanina Don\n");
+        printf("----------\n");
+        printf("Seciminizi yapin: ");
+        int secim;
+        scanf("%d", &secim);
+        switch (secim) {
+            case 1:
+                if (ozan->altin >= 25) {
+                    printf("Yaralariniz sarildi. Hijyen ve can artiyor!\n");
+                    ozan->hijyen += 10;
+                    ozan->can += 25;
+                    ozan->altin -= 25;
+                }
+                else {
+                    printf("Yeterli altin yok!\n");
+                }
+                break;
+            case 2:
+                if (ozan->altin >= 50) {
+                    printf("Tabip ameliyata aldı. Caniniz yenilendi!\n");
+                    ozan->can = 100;
+                    ozan->altin -= 50;
+                }
+                else {
+                    printf("Yeterli altin yok!\n");
+                }
+                break;
+            case 3:
+                return;
+            default:
+                printf("Gecersiz secim!\n");
+        }
+    }
+}
+
+// Han Fonksiyonu
+void han(Ozan *ozan) {
+    while (1) {
+        printf("\n-------Han-------\n");
+        printf("1. As Ocagina Git.\n");
+        printf("2. Kimiz Satin Al ic ve Eglen(5 Altin)\n");
+        printf("3. Enstruman cal ve sarki Soyle\n");
+        printf("4. Koy Meydanina Don\n");
+        printf("----------\n");
+        printf("Seciminizi yapin: ");
+        int secim;
+        int secim2;
+        scanf("%d", &secim);
+        switch (secim) {
+            case 1:
+                printf("-------As Ocagi-------\n");
+                printf("1. Elma Satin Al ve Ye(5 Altin)\n");
+                printf("2. Ekmek Satin Al ve Ye(10 Altin)\n");
+                printf("3. Kebap Satin Al ve Ye(25 Altin)\n");
+                printf("Seciminizi yapin: ");
+                scanf("%d",&secim2);
+                if(secim2==1){
+                    ozan->tokluk += 5;
+                    ozan->altin -= 5;
+                    ozan->hijyen -= 5;
+                    printf("Elma Yediniz Tokluk Artiyor. Afiyet Olsun!\n");
+                    printf("----------\n");
+                }
+                else if(secim2==2){
+                    ozan->tokluk += 10;
+                    ozan->altin -= 10;
+                    ozan->hijyen -= 10;
+                    printf("Ekmek Yediniz Tokluk Artiyor. Afiyet Olsun!\n");
+                    printf("----------\n");
+                }
+                else if(secim2==3){
+                    ozan->tokluk += 50;
+                    ozan->altin -= 25;
+                    ozan->hijyen -= 15;
+                    printf("Kebap Yediniz Tokluk Artiyor. Afiyet Olsun!\n");
+                    printf("----------\n");
+                }
+                else{
+                    printf("Gecersiz secim!\n");
+                }
+
+                break;
+            case 2:
+                printf("Kimiz ictiniz. Moraliniz duzeliyor ve Karizmaniz Artiyor!\n");
+                ozan->karizma += 5;
+                ozan->moral += 5;
+                break;
+            case 3:
+                printf("Sarki soylediniz. Para kazandiniz!\n");
+                ozan->altin += 10 + (ozan->karizma * ozan->hijyen / 100);
+                ozan->hijyen -= 10;
+                ozan->karizma += 20;
+                break;
+            case 4:
+                return;
+            default:
+                printf("Gecersiz secim!\n");
+        }
+    }
+}
+
+// Macera Fonksiyonu
+void macera(Ozan *ozan) {
+    srand(time(NULL));
+    while (1) {
+        printf("\n-------Macera-------\n");
+        printf("1. Yakin cevreden sifali bitki topla ve avlan\n");
+        printf("2. Ormana Kesfe Cik(Kolay)\n");
+        printf("3. Kayaliklari Kesfe Cik(orta)\n");
+        printf("4. Ana Kenti Keşfe git\n");
+        printf("Seciminizi yapin: ");
+        int secim;
+        scanf("%d", &secim);
+        switch (secim) {
+            case 1: {
+                double sans = ((ozan->toplayicilik * 4) / 100.0);
+                printf("Toplayicilik sansi: %.2f%%\n", sans * 100);
+
+                if ((rand() % 100) < (sans * 100)) {
+                    printf("Sifalı bitki buldunuz! Caniniz 10 artti.\n");
+                    ozan->can += 10;
+                } else if ((rand() % 100) < (sans * 50)) {
+                    printf("Meyve buldunuz! Toklugunuz 10 artti.\n");
+                    ozan->tokluk += 10;
+                } else if ((rand() % 100) < (sans * 25)) {
+                    printf("Av hayvani avladiniz! Toklugunuz 50 artti.\n");
+                    ozan->tokluk += 50;
+                } else {
+                    printf("Hicbir sey bulamadiniz.\n");
+                }
+
+                ozan->hijyen -= 10;
+                ozan->can -= 20;
+                break;
+            }
+            case 2:
+                ozan->guc += 20;
+                ozan->altin += 30;
+                ozan->hijyen -= 20;
+                ozan->can -= 30;
+                break;
+            case 3:
+                ozan->guc += 30;
+                ozan->altin += 50;
+                ozan->hijyen -= 30;
+                ozan->can -= 50;
+                break;
+            case 4:
+                return;
+            default:
+                printf("Gecersiz secim!\n");
+        }
+    }
+}
+
+// Oyun Durumu Fonksiyonu
+void durum_goster(Ozan *ozan) {
+    printf("\n------Oyun Durumu------\n");
+    printf("Isminiz: %s\n", ozan->ozanAdi);
+    printf("Calgi: %s\n", ozan->calgiAdi);
+    printf("Seviye: %d\n", ozan->seviye);
+    printf("Can: %d\n", ozan->can);
+    printf("Altin: %d\n", ozan->altin);
+    printf("Hijyen: %d\n", ozan->hijyen);
+    printf("Moral: %d\n", ozan->moral);
+    printf("Tokluk: %d\n", ozan->tokluk);
+    printf("Guc: %d\n", ozan->guc);
+    printf("Karizma: %d\n", ozan->karizma);
+    printf("----------\n");
+}
+
+// Seviye Atlama Fonksiyonu
+void seviyeAtla(Ozan *ozan) {
+    ozan->seviye++;
+    ozan->can += 20;
+    ozan->moral += 10;
+    ozan->hijyen += 10;
+    ozan->altin += 5;
+    ozan->tokluk += 5;
+
+    // Beceri puanları veriliyor
+    ozan->beceri_puani += 1;
+    printf("Seviyeniz %d oldu!\n", ozan->seviye);
+    printf("Beceri puanlariniz arttı: %d\n", ozan->beceri_puani);
+
+    // Beceri seçenekleri
+    for (int i = 0; i < MAX_BECERILER; i++) {
+        printf("%d. Beceri: %d\n", i + 1, ozan->beceriler[i]);
+    }
+
+    printf("Hangi beceriyi geliştirmek istiyorsunuz (1-%d)? ", MAX_BECERILER);
+    int beceriSecim;
+    scanf("%d", &beceriSecim);
+    if (beceriSecim >= 1 && beceriSecim <= MAX_BECERILER) {
+        ozan->beceriler[beceriSecim - 1]++;
+        printf("Beceri %d arttı!\n", beceriSecim);
+    }
+}
+
+// Durumu Goster Fonksiyonu
+void durumu_goster(Ozan ozan) {
+    printf("\n--- Karakter Durumu ---\n");
+    printf("Isim: %s\nCalgi: %s\n", ozan.ozanAdi, ozan.calgiAdi);
+    printf("Can: %d\nYas: %d\nMoral: %d\nTokluk: %d\nUyku: %d\nHijyen: %d\n", ozan.can,ozan.yas,ozan.moral, ozan.tokluk, ozan.uyku, ozan.hijyen);
+    printf("Seviye: %d\nTecrube Puani: %d\nAltin: %d\n", ozan.seviye, ozan.tecrube, ozan.altin);
+    printf("Guc: %d\nCeviklik: %d\nDayaniklilik: %d\nKarizma: %d\nToplayicilik: %d\n", ozan.guc, ozan.ceviklik, ozan.dayaniklilik, ozan.karizma, ozan.toplayicilik);
+    printf("----------\n");
+}
+
+// Ozan baslangic durumu
+void ozan_baslangic(Ozan *ozan) {
+    ozan->can = 100;
+    ozan->tokluk = 100;
+    ozan->uyku = 100;
+    ozan->hijyen = 100;
+    ozan->altin = 10;
+    ozan->tecrube = 0;
+    ozan->seviye = 1;
+    ozan->guc = 3;
+    ozan->ceviklik = 3;
+    ozan->dayaniklilik = 3;
+    ozan->karizma = 3;
+    ozan->toplayicilik = 3;
+    ozan->yas = 18;
+    ozan->moral = 100;
+}
+
+// Nitelik güncelleme
+void nitelik_guncelle(Ozan *ozan, int tokluk_degisim, int uyku_degisim, int hijyen_degisim,int uykuAzalt,int yemekYe) {
+    ozan->tokluk += tokluk_degisim;
+    if (ozan->tokluk > 100) ozan->tokluk = 100;
+    if (ozan->tokluk < 0) ozan->tokluk = 0;
+
+    ozan->uyku += uyku_degisim;
+    if (ozan->uyku > 100) ozan->uyku = 100;
+    if (ozan->uyku < 0) ozan->uyku = 0;
+
+    ozan->hijyen += hijyen_degisim;
+    if (ozan->hijyen > 100) ozan->hijyen = 100;
+    if (ozan->hijyen < 0) ozan->hijyen = 0;
+
+    if (ozan->tokluk < 20) printf("Uyari: Tokluk seviyesi kritik!\n");
+    if (ozan->uyku < 20) printf("Uyari: Uyku seviyesi kritik!\n");
+    if (ozan->hijyen < 20) printf("Uyari: Hijyen seviyesi kritik!\n");
+
+
+    if (ozan->uyku < 0) ozan->uyku = 0; // Uyku seviyesi 0'dan küçük olmasın
+
+
+    ozan->hijyen -= 10; // Hijyen seviyesini her uyku sonrası 10 azalt
+
+    // Hijyen ve uyku kritik seviyeye geldiğinde uyarı ver
+    if (ozan->hijyen < 20) {
+        printf("Uyarı: Hijyen seviyesi kritik!\n");
+    }
+    if (ozan->uyku < 20) {
+        printf("Uyarı: Uyku seviyesi kritik!\n");
+    }
+
+    // Can seviyesini etkileyen mantık
+    if (ozan->uyku <= 0) {
+        ozan->can -= 10; // Uyku sıfırlandığında can azalır
+
+    ozan->hijyen -= 20; // Hijyen seviyesini 20 azalt
+
+    // Hijyen kritik seviyeye geldiğinde uyarı ver
+    if (ozan->hijyen < 20) {
+        printf("Uyarı: Hijyen seviyesi çok düşük!\n");
+    }
+
+    // Yemek sonrası durum
+    printf("Ozan yemek yedi. Yeni Hijyen Seviyesi: %d\n", ozan->hijyen);
+}
+
+
+    }
+
+
+// Becerileri geliþtirme
+void beceri_gelistir(Ozan *ozan, char *beceri_adi, int puan) {
+    if (strcmp(beceri_adi, "guc") == 0) {
+        ozan->guc += puan;
+        if (ozan->guc > 25) ozan->guc = 25;
+    } else if (strcmp(beceri_adi, "ceviklik") == 0) {
+        ozan->ceviklik += puan;
+        if (ozan->ceviklik > 25) ozan->ceviklik = 25;
+    } else if (strcmp(beceri_adi, "dayaniklilik") == 0) {
+        ozan->dayaniklilik += puan;
+        if (ozan->dayaniklilik > 25) ozan->dayaniklilik = 25;
+    } else if (strcmp(beceri_adi, "karizma") == 0) {
+        ozan->karizma += puan;
+        if (ozan->karizma > 25) ozan->karizma = 25;
+    } else if (strcmp(beceri_adi, "toplayicilik") == 0) {
+        ozan->toplayicilik += puan;
+        if (ozan->toplayicilik > 25) ozan->toplayicilik = 25;
+    } else {
+        printf("Geçersiz beceri adý!\n");
+    }
+}
+
+
+void seviyeAtla(Ozan *ozan);
+
+// Baslangic fonksiyonu
+void baslangicFonksiyonu() {
+    int uykuSayisi = 0; // Uyku sayısı
+    Ozan ozan;
+    ozan_baslangic(&ozan);
+
+    printf("Ozanin Adini Giriniz: ");
+    fgets(ozan.ozanAdi, sizeof(ozan.ozanAdi), stdin);
+    ozan.ozanAdi[strcspn(ozan.ozanAdi, "\n")] = '\0';
+
+    printf("Calginin Adini Giriniz: ");
+    fgets(ozan.calgiAdi, sizeof(ozan.calgiAdi), stdin);
+    ozan.calgiAdi[strcspn(ozan.calgiAdi, "\n")] = '\0';
+
+    /*printf("Başlangıç Durumu: Can = %d, Tokluk = %d, Uyku = %d, Hijyen = %d, Altın = %d\n",
+           ozan.can, ozan.tokluk, ozan.uyku, ozan.hijyen, ozan.altin);
+
+     Tokluk ve hijyeni düşürerek test
+    nitelik_guncelle(&ozan, -50, -30, -90);
+    printf("Güncel Durum: Can = %d, Tokluk = %d, Uyku = %d, Hijyen = %d\n",
+           ozan.can, ozan.tokluk, ozan.uyku, ozan.hijyen);
+
+     Can kontrolünü test et
+    can_kontrol(&ozan);
+
+     Beceri geliþtirme
+    beceri_gelistir(&ozan, "guc", 10);
+    printf("Güncellenmiş Güç: %d\n", ozan.guc);
+
+*/
+
+
+    while (1) {
+        menu();
+        int secim;
+        scanf("%d", &secim);
+
+        switch (secim) {
+            case 1:
+                kamp(&ozan, &uykuSayisi);
+                break;
+            case 2:
+                sifahane(&ozan);
+                break;
+            case 3:
+                han(&ozan);
+                break;
+            case 4:
+                macera(&ozan);
+                break;
+            case 5:
+
+               if(ozan.tecrube>=100)
+               {
+                    seviyeAtla(&ozan);
+                    printf("\nSeviye atlama islemi gerceklestirildi.\n");
+                }
+               // SeviyeAtla()
+                else
+                    printf("Tecrubeniz yetersiz");
+                break;
+            case 6:
+                durumu_goster(ozan);
+                break;
+            case 7:
+                printf("Oyundan cikmak istediginize emin misiniz? (E/H): ");
+                char cikis_onayi;
+                scanf(" %c", &cikis_onayi);
+                if (cikis_onayi == 'E' || cikis_onayi == 'e') {
+                    printf("Oyun sonlandiriliyor...\n");
+                    exit(0);
+                }
+                break;
+            default:
+                printf("Gecersiz giris! Lutfen tekrar deneyin.\n");
+        }
+    }
+
+}
+
+void seviyeAtla(Ozan *ozan);
+
+// Ana fonksiyon
+int main() {
+
+    int uykuSayisi = 0; // Uyku sayısı
+    Ozan ozan;
+    ozan_baslangic(&ozan);
+
+    printf("Ozanin Adini Giriniz: ");
+    fgets(ozan.ozanAdi, sizeof(ozan.ozanAdi), stdin);
+    ozan.ozanAdi[strcspn(ozan.ozanAdi, "\n")] = '\0';
+
+    printf("Calginin Adini Giriniz: ");
+    fgets(ozan.calgiAdi, sizeof(ozan.calgiAdi), stdin);
+    ozan.calgiAdi[strcspn(ozan.calgiAdi, "\n")] = '\0';
+
+        Ozan oyuncu = {
+        "Ozan",  // ozanAdi
+        "Guitar",  // calgiAdi
+        25,  // yas
+        100,  // altin
+        1,  // seviye
+        100,  // can
+        50,  // tecrube
+        50,  // tokluk
+        50,  // uyku
+        50,  // guc
+        50,  // moral
+        50,  // ceviklik
+        50,  // dayaniklilik
+        50,  // karizma
+        50,  // toplayicilik
+        0,  // hijyen
+        0,  // beceri_puani
+        {0, 0, 0, 0, 0}  // beceriler dizisi
+};
+
+     while (1) {
+    menu();
+    int secim;
+    scanf("%d", &secim);
+
+    switch (secim) {
+        case 1:
+            kamp(&ozan, &uykuSayisi);
+            break;
+        case 2:
+            sifahane(&ozan);
+            break;
+        case 3:
+            han(&ozan);
+            break;
+        case 4:
+            macera(&ozan);
+            break;
+        case 5:
+            if (ozan.tecrube >= 100) {
+                seviyeAtla(&ozan);
+                printf("\nSeviye atlama islemi gerceklestirildi.\n");
+            } else {
+                printf("Tecrubeniz yetersiz.\n");
+            }
+            break;
+        case 6:
+            durumu_goster(ozan);
+            break;
+    case 7:
+                printf("Oyundan cikmak istediginize emin misiniz? (E/H): ");
+                char cikis_onayi;
+                scanf(" %c", &cikis_onayi);
+                if (cikis_onayi == 'E' || cikis_onayi == 'e') {
+                    printf("Oyun sonlandiriliyor...\n");
+                    exit(0);
+                }
+                break;
+            default:
+            printf("Gecersiz giris! Lutfen tekrar deneyin.\n");
+    }
+}
+return 0;
+}
