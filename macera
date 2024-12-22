@@ -1,0 +1,44 @@
+void macera(Ozan *ozan) {
+    srand(time(NULL));
+    Karakter dusman;
+    while (1) {
+        printf("\n-------Macera-------\n");
+        printf("1. Yakin cevreden sifali bitki topla ve avlan\n");
+        printf("2. Ormana Kesfe Cik(Kolay)\n");
+        printf("3. Kayaliklari Kesfe Cik(orta)\n");
+        printf("4. Ana Kenti Keşfe git(Zor)\n");
+        printf("Seciminizi yapin: ");
+        scanf("%d", &secim);
+
+        switch (secim) {
+            case 1: {
+                double sans = ((ozan->toplayicilik * 4) / 100.0);
+                printf("Toplayicilik sansi: %.2f%%\n", sans * 100);
+
+                if ((rand() % 100) < (sans * 100)) {
+                    printf("Sifalı bitki buldunuz! Caniniz 10 artti.\n");
+                    ozan->can += 10;
+                } else if ((rand() % 100) < (sans * 50)) {
+                    printf("Meyve buldunuz! Toklugunuz 10 artti.\n");
+                    ozan->tokluk += 10;
+                } else if ((rand() % 100) < (sans * 25)) {
+                    printf("Av hayvani avladiniz! Toklugunuz 50 artti.\n");
+                    ozan->tokluk += 50;
+                } else {
+                    printf("Hicbir sey bulamadiniz.\n");
+                }
+
+                ozan->hijyen -= 10;
+
+                break;
+            }
+
+            case 4:
+                dusman_olustur(secim, &dusman);
+                savas(ozan, &dusman);
+                break;
+            default:
+                printf("Gecersiz secim!\n");
+        }
+    }
+}
